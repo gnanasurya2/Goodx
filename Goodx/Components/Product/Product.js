@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
-import { Text, View, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Product = (props) => {
   const [iconName, setIconName] = useState("heart-outline");
@@ -15,14 +14,14 @@ const Product = (props) => {
   const favouritesClickHandler = () => {
     if (iconName === "heart-outline") {
       setIconName("heart");
-      setIconColor("red");
+      setIconColor("#CD2B2A");
     } else {
       setIconName("heart-outline");
       setIconColor("grey");
     }
   };
   return (
-    <View style={styles.wrapper}>
+    <TouchableOpacity style={styles.wrapper} onPress={props.clicked}>
       <View style={styles.icon}>
         <TouchableOpacity onPress={favouritesClickHandler}>
           <MaterialCommunityIcons name={iconName} size={25} color={iconColor} />
@@ -39,7 +38,7 @@ const Product = (props) => {
         ₹ {props.cost.toLocaleString("en-IN", { style: "currency" })}
       </Text>
       <Text style={styles.description}>{description}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -75,6 +74,8 @@ const styles = new StyleSheet.create({
     zIndex: 2,
     alignSelf: "flex-end",
     paddingRight: 7,
+    paddingBottom: 10,
+    paddingLeft: 10,
   },
 });
 

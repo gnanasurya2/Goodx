@@ -27,6 +27,12 @@ const HomeScreen = (props) => {
   const categoryClickHandler = (title) => {
     console.log(title);
   };
+  const productClickHandler = (item) => {
+    props.navigation.navigate("ProductDetail", {
+      price: item.cost,
+      description: item.description,
+    });
+  };
   return (
     <View>
       <TopBar />
@@ -43,7 +49,11 @@ const HomeScreen = (props) => {
           </View>
         )}
         renderItem={({ item }) => (
-          <Product cost={item.cost} description={item.description} />
+          <Product
+            cost={item.cost}
+            description={item.description}
+            clicked={() => productClickHandler(item)}
+          />
         )}
         numColumns={2}
       />

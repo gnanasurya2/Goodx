@@ -7,6 +7,7 @@ import FavouritesScreen from "../Screens/Favourites";
 import AdsScreen from "../Screens/AdsScreen";
 import SellScreen from "../Screens/SellScreen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import ProductNavigation from "./productNavigation";
 
 const Tab = createBottomTabNavigator();
 
@@ -21,7 +22,7 @@ const MyTabs = () => {
     >
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={ProductNavigation}
         options={{
           tabBarIcon: ({ color, size }) => createIcon("home", color, size),
         }}

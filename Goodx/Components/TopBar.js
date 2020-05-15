@@ -12,8 +12,8 @@ const TopBar = (props) => {
 };
 const styles = new StyleSheet.create({
   topBar: {
-    marginTop: 30,
-    height: 50,
+    paddingTop: 35,
+    paddingBottom: 5,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
