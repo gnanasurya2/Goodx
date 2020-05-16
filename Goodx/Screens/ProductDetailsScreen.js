@@ -12,6 +12,7 @@ import {
 import TopBar from "../Components/TopBar";
 import Colors from "../constants/colors";
 import * as Linking from "expo-linking";
+import Carousel from "../Components/Carousel";
 
 const ProductDetails = (props) => {
   const chatPressHandler = () => {
@@ -25,34 +26,13 @@ const ProductDetails = (props) => {
     >
       <TopBar />
       <View style={{ height: "30%" }}>
-        <ScrollView
-          style={styles.imageWrapper}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        >
-          <Image
-            style={styles.image}
-            source={{
-              uri:
-                "https://images-na.ssl-images-amazon.com/images/I/91uix57X+jL.jpg",
-            }}
-          />
-          <Image
-            style={styles.image}
-            source={{
-              uri:
-                "https://images-na.ssl-images-amazon.com/images/I/91uix57X+jL.jpg",
-            }}
-          />
-          <Image
-            style={styles.image}
-            source={{
-              uri:
-                "https://images-na.ssl-images-amazon.com/images/I/91uix57X+jL.jpg",
-            }}
-          />
-          <Text>sajhfsa</Text>
-        </ScrollView>
+        <Carousel
+          images={[
+            "https://images-na.ssl-images-amazon.com/images/I/91uix57X+jL.jpg",
+            "https://images-na.ssl-images-amazon.com/images/I/91uix57X+jL.jpg",
+            "https://images-na.ssl-images-amazon.com/images/I/91uix57X+jL.jpg",
+          ]}
+        />
       </View>
       <View style={styles.card}>
         <Text style={styles.amountText}>₹ {props.route.params.price}</Text>
@@ -77,15 +57,7 @@ const styles = new StyleSheet.create({
   wrapper: {
     flex: 1,
   },
-  imageWrapper: {
-    width: "95%",
-  },
-  image: {
-    resizeMode: "contain",
-    width: Dimensions.get("window").width,
-    height: "100%",
-    marginVertical: 10,
-  },
+
   card: {
     alignSelf: "center",
     width: "95%",

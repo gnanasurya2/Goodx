@@ -3,11 +3,12 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../Screens/HomeScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
-import FavouritesScreen from "../Screens/Favourites";
+import FavouritesScreen from "../Screens/FavouritesScreen";
 import AdsScreen from "../Screens/AdsScreen";
 import SellScreen from "../Screens/SellScreen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ProductNavigation from "./productNavigation";
+import AddProductNavigation from "./AddProductNavigation";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +37,7 @@ const MyTabs = () => {
       />
       <Tab.Screen
         name="Sell"
-        component={SellScreen}
+        component={AddProductNavigation}
         options={{
           tabBarIcon: ({ color, size }) => createIcon("plus", color, size),
         }}

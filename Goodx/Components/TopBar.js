@@ -6,7 +6,7 @@ import Colors from "../constants/colors";
 const TopBar = (props) => {
   return (
     <View style={styles.topBar}>
-      <Text style={styles.text}>GoodX</Text>
+      <Text style={styles.text}>{props.title ? props.title : "Goodx"}</Text>
     </View>
   );
 };

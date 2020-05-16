@@ -67,7 +67,6 @@ const styles = new StyleSheet.create({
     fontSize: 18,
     color: "grey",
   },
-  list: {},
 });
 
 export default HomeScreen;
