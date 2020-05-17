@@ -9,6 +9,7 @@ import SellScreen from "../Screens/SellScreen";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ProductNavigation from "./productNavigation";
 import AddProductNavigation from "./AddProductNavigation";
+import ProfileNavigation from "./ProfileNavigation";
 
 const Tab = createBottomTabNavigator();
 
@@ -52,7 +53,7 @@ const MyTabs = () => {
       />
       <Tab.Screen
         name="My Profile"
-        component={ProfileScreen}
+        component={ProfileNavigation}
         options={{
           tabBarIcon: ({ color, size }) => createIcon("account", color, size),
         }}

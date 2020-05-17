@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Text, View, StyleSheet, TextInput } from "react-native";
+import { heightPercentage } from "../helpers/responsiveness";
 
 const DetailsInput = (props) => {
   return (
@@ -21,7 +22,7 @@ const styles = new StyleSheet.create({
   wrapper: {
     width: "90%",
     alignSelf: "center",
-    marginTop: 30,
+    marginTop: heightPercentage(2),
     marginBottom: 50,
   },
   titleText: {

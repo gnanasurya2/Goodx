@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import { Text, View, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import uuidv4 from "uuid-random";
+import Firebase from "../constants/firebase";
+import * as ImageManipulator from "expo-image-manipulator";
 
 import TopBar from "../Components/TopBar";
 import Button from "../Components/Button";
@@ -13,8 +16,18 @@ import Colors from "../constants/colors";
 import { widthPercentage, heightPercentage } from "../helpers/responsiveness";
 
 const AddImagesScreen = (props) => {
-  const [permission, setPermission] = useState("");
   const [imageUris, setImageUris] = useState([]);
+
+  useEffect(() => console.log(props.route.params), []);
+  const uploadImage = async (uri) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const ref = Firebase.storage().ref().child(uuidv4());
+    const snapshot = await ref.put(blob);
+
+    return await ref.getDownloadURL();
+  };
+
   const displayImageHandler = (url) => {
     if (imageUris.length < 4) {
       const updatedUris = [...imageUris];
@@ -22,11 +35,17 @@ const AddImagesScreen = (props) => {
       setImageUris(updatedUris);
     }
   };
+  const imageCompressor = async (url) =>
+    await ImageManipulator.manipulateAsync(url, [], {
+      compress: 0.2,
+      format: ImageManipulator.SaveFormat.JPEG,
+    });
   const openCameraHandler = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     if (status === "granted") {
       const result = await ImagePicker.launchCameraAsync();
-      displayImageHandler(result.uri);
+      const image = await imageCompressor(result.uri);
+      displayImageHandler(image.uri);
     }
   };
 
@@ -37,12 +56,30 @@ const AddImagesScreen = (props) => {
         aspect: [4, 3],
         allowsEditing: true,
       });
-      displayImageHandler(result.uri);
+      const image = await imageCompressor(result.uri);
+
+      displayImageHandler(image.uri);
     }
   };
-  const addImageHandler = () => {
-    props.navigation.navigate("ProductPosted");
+
+  const addImageHandler = async () => {
+    if (imageUris.length) {
+      let images = [];
+      for (let image of imageUris) {
+        const url = await uploadImage(image);
+        images.push(url);
+      }
+      props.navigation.navigate("ProductPosted", {
+        images: images,
+        data: { ...props.route.params },
+      });
+    } else {
+      Alert.alert("Add atleast one image", "", [
+        { text: "okay", style: "default" },
+      ]);
+    }
   };
+
   return (
     <View style={styles.wrapper}>
       <TopBar title="Images" />

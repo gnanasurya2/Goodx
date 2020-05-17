@@ -1,11 +1,19 @@
 import React, { useEffect } from "react";
 
 import { Text, View, StyleSheet } from "react-native";
+import Firebase from "firebase";
+import "firebase/database";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { widthPercentage } from "../helpers/responsiveness";
+
 const ProductPosted = (props) => {
   useEffect(() => {
-    setTimeout(() => props.navigation.navigate("Sell"), 1500);
+    const doc = Firebase.firestore()
+      .collection("Product")
+      .add(props.route.params)
+      .then((data) => props.navigation.navigate("Sell"))
+      .catch((err) => console.log(err));
+    console.log(doc);
   });
   return (
     <View style={styles.wrapper}>
