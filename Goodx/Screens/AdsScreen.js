@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-import { Text, View, StyleSheet } from "react-native";
+import { FlatList, View, StyleSheet } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+
 import TopBar from "../Components/TopBar";
 import Favourites from "../Components/Favourites";
+import * as ActionTypes from "../store/actions/actionTypes";
 
 const AdsScreen = (props) => {
+  const data = useSelector((state) => state.products.myProducts);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(ActionTypes.fetchProducts("Myproducts"));
+  }, []);
   return (
     <View>
-      <TopBar />
-      <Favourites
-        title=" Harry potter"
-        description=" It's a different harry potter book"
+      <TopBar title="My products" />
+      <FlatList
+        data={data}
+        renderItem={({ item }) => (
+          <Favourites title={item.title} description={item.description} />
+        )}
       />
     </View>
   );

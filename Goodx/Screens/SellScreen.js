@@ -4,8 +4,9 @@ import { Text, View, StyleSheet } from "react-native";
 import CategoriesList from "../Components/Categories/CategoriesList";
 const SellScreen = (props) => {
   const categoryClickHandler = (title) => {
-    props.navigation.navigate("AddDetails", { title: title });
+    props.navigation.navigate("AddDetails", { category: title });
   };
+
   return (
     <View style={styles.wrapper}>
       <Text style={styles.titleText}>

@@ -28,6 +28,7 @@ const AddDetailsScreen = (props) => {
       title: title,
       description: description,
       price: price,
+      category: props.route.params.category,
     });
   };
   return (

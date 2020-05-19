@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Text,
@@ -15,9 +15,20 @@ import * as Linking from "expo-linking";
 import Carousel from "../Components/Carousel";
 
 const ProductDetails = (props) => {
+  const [imageUris, setImageUris] = useState([]);
+
   const chatPressHandler = () => {
-    Linking.openURL("whatsapp://send?phone=919755890610");
+    Linking.openURL(
+      "whatsapp://send?phone=91" + props.route.params.phoneNumber
+    );
   };
+
+  useEffect(() => {
+    const urls = props.route.params.images.map((image) => {
+      return { uri: image };
+    });
+    setImageUris(urls);
+  }, []);
 
   return (
     <View
@@ -26,19 +37,11 @@ const ProductDetails = (props) => {
     >
       <TopBar />
       <View style={{ height: "30%" }}>
-        <Carousel
-          images={[
-            "https://images-na.ssl-images-amazon.com/images/I/91uix57X+jL.jpg",
-            "https://images-na.ssl-images-amazon.com/images/I/91uix57X+jL.jpg",
-            "https://images-na.ssl-images-amazon.com/images/I/91uix57X+jL.jpg",
-          ]}
-        />
+        <Carousel images={imageUris} />
       </View>
       <View style={styles.card}>
         <Text style={styles.amountText}>₹ {props.route.params.price}</Text>
-        <Text style={styles.titleText}>
-          Harry potter and the prisoner of Azkaban
-        </Text>
+        <Text style={styles.titleText}>{props.route.params.title}</Text>
       </View>
       <ScrollView>
         <View style={styles.card}>

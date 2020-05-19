@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as actionTypes from "../../store/actions/actionTypes";
 
 const Product = (props) => {
   const [iconName, setIconName] = useState("heart-outline");
   const [iconColor, setIconColor] = useState("grey");
+  const dispatch = useDispatch();
 
   const description =
     props.description.length > 20
@@ -15,9 +18,26 @@ const Product = (props) => {
     if (iconName === "heart-outline") {
       setIconName("heart");
       setIconColor("#CD2B2A");
+      dispatch(
+        actionTypes.addProducts(
+          props.data.data.category,
+          props.data.data.title,
+          props.data.data.description,
+          props.data.data.price,
+          props.data.phoneNumber,
+          "Favourites"
+        )
+      );
     } else {
       setIconName("heart-outline");
       setIconColor("grey");
+      dispatch(
+        actionTypes.deleteProducts(
+          props.data.data.title,
+          props.data.data.description,
+          "Favourites"
+        )
+      );
     }
   };
   return (
@@ -29,8 +49,7 @@ const Product = (props) => {
       </View>
       <Image
         source={{
-          uri:
-            "https://images-na.ssl-images-amazon.com/images/I/91uix57X+jL.jpg",
+          uri: props.image,
         }}
         style={styles.image}
       />

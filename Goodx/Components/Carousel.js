@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 import {
   Text,
@@ -10,7 +11,19 @@ import {
 } from "react-native";
 const Carousel = (props) => {
   const [interval, setInterval] = useState(0);
-  const [active, setActive] = useState([true, false, false]);
+  const [active, setActive] = useState([]);
+
+  useEffect(() => {
+    const activeArray = [...active].map((_, index) => index === interval);
+    setActive(activeArray);
+  }, [interval]);
+
+  useEffect(() => {
+    let activeArray = props.images.map((_, index) => false);
+    activeArray[0] = true;
+    setActive(activeArray);
+  }, []);
+
   const getInterval = (data) => {
     const int = Math.round(
       data.nativeEvent.contentOffset.x / Dimensions.get("window").width
@@ -19,10 +32,6 @@ const Carousel = (props) => {
       setInterval(int);
     }
   };
-  useEffect(() => {
-    const activeArray = [...active].map((_, index) => index === interval);
-    setActive(activeArray);
-  }, [interval]);
 
   return (
     <>
@@ -34,30 +43,9 @@ const Carousel = (props) => {
         onScroll={(data) => getInterval(data)}
         scrollEventThrottle={500}
       >
-        <Image
-          style={styles.image}
-          source={
-            props.images[0]
-              ? { uri: props.images[0] }
-              : require("../assets/initial.png")
-          }
-        />
-        <Image
-          style={styles.image}
-          source={
-            props.images[1]
-              ? { uri: props.images[1] }
-              : require("../assets/initial.png")
-          }
-        />
-        <Image
-          style={styles.image}
-          source={
-            props.images[2]
-              ? { uri: props.images[2] }
-              : require("../assets/initial.png")
-          }
-        />
+        {props.images.map((image, index) => (
+          <Image style={styles.image} source={image} key={index} />
+        ))}
       </ScrollView>
       <View style={styles.stats}>
         {active.map((ele, index) => (
@@ -95,4 +83,12 @@ const styles = new StyleSheet.create({
   },
 });
 
+Carousel.prototype = {
+  images: PropTypes.array,
+  active: PropTypes.number,
+};
+
+Carousel.defaultProps = {
+  active: null,
+};
 export default Carousel;

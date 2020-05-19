@@ -5,16 +5,36 @@ import Firebase from "firebase";
 import "firebase/database";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { widthPercentage } from "../helpers/responsiveness";
+import { useDispatch } from "react-redux";
+import * as ActionTypes from "../store/actions/actionTypes";
 
 const ProductPosted = (props) => {
+  const dispatch = useDispatch();
+
   useEffect(() => {
+    const dat = props.route.params.data;
+    dispatch(
+      ActionTypes.addProducts(
+        dat.category,
+        dat.title,
+        dat.description,
+        dat.price,
+        6380084580,
+        "Myproducts"
+      )
+    );
     const doc = Firebase.firestore()
       .collection("Product")
-      .add(props.route.params)
+      .add({
+        ...props.route.params,
+        timeStamp: new Date().getTime(),
+        userId: 1224,
+        phoneNumber: 6380084580,
+      })
       .then((data) => props.navigation.navigate("Sell"))
       .catch((err) => console.log(err));
     console.log(doc);
-  });
+  }, []);
   return (
     <View style={styles.wrapper}>
       <MaterialCommunityIcons

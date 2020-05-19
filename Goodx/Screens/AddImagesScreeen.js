@@ -14,32 +14,39 @@ import Carousel from "../Components/Carousel";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Colors from "../constants/colors";
 import { widthPercentage, heightPercentage } from "../helpers/responsiveness";
+import { object } from "prop-types";
 
 const AddImagesScreen = (props) => {
-  const [imageUris, setImageUris] = useState([]);
+  const [imageUris, setImageUris] = useState([
+    require("../assets/initial.png"),
+    require("../assets/initial.png"),
+    require("../assets/initial.png"),
+  ]);
+  const [numberOfImages, setNumberOfImages] = useState(0);
 
-  useEffect(() => console.log(props.route.params), []);
   const uploadImage = async (uri) => {
-    const response = await fetch(uri);
+    const response = await fetch(uri.uri);
     const blob = await response.blob();
     const ref = Firebase.storage().ref().child(uuidv4());
     const snapshot = await ref.put(blob);
-
     return await ref.getDownloadURL();
   };
 
   const displayImageHandler = (url) => {
-    if (imageUris.length < 4) {
+    if (numberOfImages < 3) {
       const updatedUris = [...imageUris];
-      updatedUris.push(url);
+      updatedUris[numberOfImages] = { uri: url };
+      setNumberOfImages(numberOfImages + 1);
       setImageUris(updatedUris);
     }
   };
+
   const imageCompressor = async (url) =>
     await ImageManipulator.manipulateAsync(url, [], {
       compress: 0.2,
       format: ImageManipulator.SaveFormat.JPEG,
     });
+
   const openCameraHandler = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     if (status === "granted") {
@@ -66,8 +73,10 @@ const AddImagesScreen = (props) => {
     if (imageUris.length) {
       let images = [];
       for (let image of imageUris) {
-        const url = await uploadImage(image);
-        images.push(url);
+        if (typeof image === "object") {
+          const url = await uploadImage(image);
+          images.push(url);
+        }
       }
       props.navigation.navigate("ProductPosted", {
         images: images,
@@ -88,14 +97,14 @@ const AddImagesScreen = (props) => {
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={openCameraHandler}>
-          <MaterialCommunityIcons name="camera" size={25} />
+          <MaterialCommunityIcons name="camera" size={25} color="white" />
           <Text style={styles.buttonText}>Camera</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ ...styles.button, borderLeftWidth: 1, borderColor: "white" }}
           onPress={openGalleryHandler}
         >
-          <MaterialCommunityIcons name="camera-burst" size={25} />
+          <MaterialCommunityIcons name="camera-burst" size={25} color="white" />
           <Text style={styles.buttonText}>Gallery</Text>
         </TouchableOpacity>
       </View>
@@ -128,6 +137,7 @@ const styles = new StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
+    color: "white",
   },
   submitButton: {
     marginTop: 60,

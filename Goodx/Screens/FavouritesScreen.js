@@ -1,16 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-import { Text, ScrollView, StyleSheet } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+
 import Favourites from "../Components/Favourites";
 import TopBar from "../Components/TopBar";
+import * as actionTypes from "../store/actions/actionTypes";
 
 const FavouritesScreen = (props) => {
+  const data = useSelector((state) => state.products.favourites);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(actionTypes.fetchProducts("Favourites"));
+  }, []);
+
   return (
-    <ScrollView>
+    <View>
       <TopBar title="Favourites" />
-      <Favourites title="Harry potter" description="It's a harry potter book" />
-      <Favourites title="Harry potter" description="It's a harry potter book" />
-    </ScrollView>
+      <FlatList
+        data={data}
+        renderItem={({ item }) => (
+          <Favourites title={item.title} description={item.description} />
+        )}
+      />
+    </View>
   );
 };
 

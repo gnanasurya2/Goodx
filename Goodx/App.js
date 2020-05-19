@@ -1,14 +1,30 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import ReduxThunk from "redux-thunk";
 
-import HomeScreen from "./Screens/HomeScreen";
 import MainNavigator from "./navigation/MainNavigator";
 import { NavigationContainer } from "@react-navigation/native";
+import UserReducer from "./store/reducers/User";
+import ProductsReducer from "./store/reducers/products";
+import { init } from "./database/database";
+console.disableYellowBox = true;
+
+const rootReducer = combineReducers({
+  user: UserReducer,
+  products: ProductsReducer,
+});
+init();
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
+
 export default function App() {
   return (
-    <NavigationContainer>
-      <MainNavigator />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <MainNavigator />
+      </NavigationContainer>
+    </Provider>
   );
 }
 
