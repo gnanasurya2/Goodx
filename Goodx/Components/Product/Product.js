@@ -25,6 +25,7 @@ const Product = (props) => {
           props.data.data.description,
           props.data.data.price,
           props.data.phoneNumber,
+          props.data.timeStamp,
           "Favourites"
         )
       );

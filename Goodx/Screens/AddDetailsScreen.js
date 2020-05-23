@@ -10,7 +10,20 @@ const AddDetailsScreen = (props) => {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
+  const [comment, setComment] = useState("");
 
+  useEffect(() => {
+    const category = props.route.params.category;
+    let com = "Mention key features like Brand,model,type";
+    if (category === "Books") {
+      com = "Mention edition, publisher";
+    } else if (category === "Notes") {
+      com = "Mention subject name";
+    } else if (category === "Miscellanous") {
+      com = "Mention the name and type";
+    }
+    setComment(com);
+  }, []);
   const submitButtonHandler = () => {
     if (title === "") {
       Alert.alert("Enter a title", "", [{ text: "okay" }]);
@@ -38,7 +51,7 @@ const AddDetailsScreen = (props) => {
       <DetailsInput
         title="Title"
         keyboard="default"
-        suggestion="Mention key features like Brand,model,type"
+        suggestion={comment}
         value={title}
         onChangeText={(text) => setTitle(text)}
       />

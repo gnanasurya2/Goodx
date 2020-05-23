@@ -5,14 +5,8 @@ import { widthPercentage } from "../helpers/responsiveness";
 
 const Favourites = (props) => {
   return (
-    <TouchableOpacity style={styles.wrapper}>
-      <Image
-        source={{
-          uri:
-            "https://images-na.ssl-images-amazon.com/images/I/91uix57X+jL.jpg",
-        }}
-        style={styles.image}
-      />
+    <TouchableOpacity style={styles.wrapper} onPress={props.clicked}>
+      <Image source={require("../assets/initial.png")} style={styles.image} />
       <View style={styles.textWrapper}>
         <View style={styles.contentWrapper}>
           <Text style={styles.text}>Product:</Text>
@@ -23,6 +17,11 @@ const Favourites = (props) => {
           <Text style={styles.content}>{props.description}</Text>
         </View>
       </View>
+      {props.delete ? (
+        <TouchableOpacity style={styles.delete} onPress={props.deleteClicked}>
+          <Text style={styles.deleteText}>Delete</Text>
+        </TouchableOpacity>
+      ) : null}
     </TouchableOpacity>
   );
 };
@@ -33,10 +32,12 @@ const styles = new StyleSheet.create({
     height: 120,
     alignSelf: "center",
     borderWidth: 2,
-    padding: 10,
+    // padding: 10,
     borderRadius: 15,
     marginTop: 20,
     flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   image: {
     width: widthPercentage(30),
@@ -54,6 +55,17 @@ const styles = new StyleSheet.create({
   },
   content: {
     fontSize: 15,
+  },
+  delete: {
+    backgroundColor: "red",
+    borderTopRightRadius: 12,
+    borderBottomRightRadius: 12,
+    height: "100%",
+  },
+  deleteText: {
+    alignSelf: "center",
+    padding: 10,
+    marginTop: "50%",
   },
 });
 

@@ -12,28 +12,42 @@ const ProductPosted = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const dat = props.route.params.data;
-    dispatch(
-      ActionTypes.addProducts(
-        dat.category,
-        dat.title,
-        dat.description,
-        dat.price,
-        6380084580,
-        "Myproducts"
-      )
-    );
-    const doc = Firebase.firestore()
-      .collection("Product")
-      .add({
-        ...props.route.params,
-        timeStamp: new Date().getTime(),
-        userId: 1224,
-        phoneNumber: 6380084580,
-      })
-      .then((data) => props.navigation.navigate("Sell"))
-      .catch((err) => console.log(err));
-    console.log(doc);
+    const fun = async () => {
+      const dat = props.route.params.data;
+      const email = Firebase.auth().currentUser.email;
+      console.log(email);
+      let phoneNumber;
+      const data = await Firebase.firestore()
+        .collection("user")
+        .doc(email)
+        .get()
+        .then((data) => {
+          phoneNumber = data.data().phoneNumber;
+        });
+      const time = new Date().getTime();
+      dispatch(
+        ActionTypes.addProducts(
+          dat.category,
+          dat.title,
+          dat.description,
+          dat.price,
+          phoneNumber,
+          time,
+          "Myproducts"
+        )
+      );
+      const doc = Firebase.firestore()
+        .collection("Product")
+        .add({
+          ...props.route.params,
+          timeStamp: time,
+          phoneNumber: phoneNumber,
+        })
+        .then((data) => props.navigation.navigate("Sell"))
+        .catch((err) => console.log(err));
+      console.log(doc);
+    };
+    fun();
   }, []);
   return (
     <View style={styles.wrapper}>

@@ -8,7 +8,9 @@ import MainNavigator from "./navigation/MainNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import UserReducer from "./store/reducers/User";
 import ProductsReducer from "./store/reducers/products";
-import { init } from "./database/database";
+import { init, DropTable } from "./database/database";
+import RootNavigator from "./navigation/RootNavigation";
+
 console.disableYellowBox = true;
 
 const rootReducer = combineReducers({
@@ -22,7 +24,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <MainNavigator />
+        <RootNavigator />
       </NavigationContainer>
     </Provider>
   );

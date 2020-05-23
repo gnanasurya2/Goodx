@@ -12,10 +12,19 @@ export const addProducts = (
   description,
   price,
   phoneNumber,
+  timeStamp,
   type
 ) => {
   return async (dispatch) => {
-    await AddProducts(category, title, description, price, phoneNumber, type)
+    await AddProducts(
+      category,
+      title,
+      description,
+      price,
+      phoneNumber,
+      timeStamp,
+      type
+    )
       .then((data) => {
         dispatch(fetchProducts(type));
       })

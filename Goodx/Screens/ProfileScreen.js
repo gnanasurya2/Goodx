@@ -35,6 +35,11 @@ const ProfileScreen = (props) => {
           <Entypo name="triangle-right" size={35} />
         </View>
       </TouchableWithoutFeedback>
+      <View style={styles.message}>
+        <Text style={styles.messageText}>With</Text>
+        <MaterialCommunityIcons name="heart" size={20} color="#CD2B2A" />
+        <Text style={styles.messageText}>from E-cell NIT Agartala</Text>
+      </View>
     </View>
   );
 };
@@ -62,6 +67,19 @@ const styles = new StyleSheet.create({
     paddingLeft: 20,
     fontWeight: "bold",
     width: "80%",
+  },
+  message: {
+    position: "absolute",
+    bottom: 0,
+    flexDirection: "row",
+    alignSelf: "center",
+    marginBottom: 20,
+    justifyContent: "space-between",
+    width: 240,
+  },
+  messageText: {
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

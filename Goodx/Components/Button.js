@@ -3,8 +3,11 @@ import React from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 const Button = (props) => {
   return (
-    <TouchableOpacity style={styles.wrapper} onPress={props.clicked}>
-      <Text style={styles.text}>SUBMIT</Text>
+    <TouchableOpacity
+      style={[styles.wrapper, props.style]}
+      onPress={props.clicked}
+    >
+      <Text style={styles.text}>{props.title ? props.title : "SUBMIT"}</Text>
     </TouchableOpacity>
   );
 };
@@ -21,6 +24,7 @@ const styles = new StyleSheet.create({
     color: "white",
     paddingHorizontal: 24,
     paddingVertical: 6,
+    textAlign: "center",
   },
 });
 
